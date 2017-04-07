@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Mon Compte</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div th:if="${clientName != null}">
+		<font color="red">
+			<p th:text="${clientName}"></p>
+		</font>
+		<form action="/login" method="post">
+			<input type="hidden" name="mode" value="signOut"></input>
+			<button type="submit">Se déconnecter</button>
+		</form>
+	</div>
+	<div th:if="${param.sucess}">
+		<font color="red">Opération effectué.</font>
+	</div>
+	<div th:if="${param.failed}">
+		<font color="red">Opération interdite. Solde ou/et découvert insuffisant.</font>
+	</div>
+	<div th:if="${param.montant}">
+		<font color="red">Merci de saisie un montant positif.</font>
+	</div>
+	<div th:if="${currentAccount}">
+		<p>Compte Courant</p>
+		<form action="/monCompte" method="post">
+			<table>
+				<tr>
+					<td>Solde :</td>
+					<td th:text="${currentAccount.solde}"></td>
+					<td>Découvert Autorisé :</td>
+					<td th:text="${currentAccount.decouvertAutorise}"></td>
+				</tr>
+				<tr>
+					<td>Montant :</td>
+					<td><input type="number" name="montant" min="0" value="0"/></td>
+					<td>Type d'opération :</td>
+					<td><select name="type">
+							<option value="debit">Débit</option>
+							<option value="credit">Crédit</option>
+					</select></td>
+				</tr>
+			</table>
+			<input type="hidden" name="accountID" th:value="${currentAccount.id}" />
+			<input type="hidden" name="accountType" value="current" />
+			<button type="submit">Effectuer</button>
+		</form>
+	</div>
+
+
+	<div th:if="${savingAccount}">
+		<p>Comptes d'Epargne</p>
+		<form th:each="account : ${savingAccount}" action="/monCompte"
+			method="post">
+			<table>
+				<tr>
+					<td>Type :</td>
+					<td><p th:text="${account.name}"></p></td>
+					<td>Solde :</td>
+					<td><p th:text="${account.solde}"></p></td>
+				</tr>
+				<tr>
+					<td>Montant :</td>
+					<td><input type="number" name="montant" min="0" value="0"/></td>
+					<td>Type d'opération :</td>
+					<td><select name="type">
+							<option value="debit">Débit</option>
+							<option value="credit">Crédit</option>
+					</select></td>
+				</tr>
+			</table>
+			<input type="hidden" name="accountID" th:value="${account.id}" /> <input
+				type="hidden" name="accountType" value="saving" />
+			<button type="submit">Effectuer</button>
+		</form>
+	</div>
+
+	<br />
+	<br />
+	<br />
+
+	<div>
+		<form action="/virement" method="get">
+			<button type="submit">Effectuer un virement</button>
+		</form>
+	</div>
+	<div>
+		<form action="/borrow" method="get">
+			<button type="submit">Demander un prêt</button>
+		</form>
+	</div>
+</body>
+</html>

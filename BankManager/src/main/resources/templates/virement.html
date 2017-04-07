@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Virement</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div th:if="${param.sucess}">
+		<font color="red">Opération effectué.</font>
+	</div>
+	<div th:if="${param.failed}">
+		<font color="red">
+		<p>Opération interdite. Solde ou/et découvert insuffisant.</p>
+		<p>Attention, le montant doit être supérieur à 0€</p>
+		</font>
+	</div>
+	<form action="/virement" method="post">
+		<h1>Seletionner le compte émetteur</h1>
+		<select name="fromStr">
+			<OPTION th:value="${currentAccount.id} + ';current'">Compte courant</OPTION>
+			<OPTION th:each="account : ${savingAccount}" th:value="${account.id} + ';saving'" th:text="${account.name}"></OPTION>
+		</select>
+		<h1>Séléctioner le compte destinataire</h1>
+		<select name="toStr">
+			<OPTION th:value="${currentAccount.id} + ';current'">Compte courant</OPTION>
+			<OPTION th:each="account : ${savingAccount}" th:value="${account.id} + ';saving'" th:text="${account.name}"></OPTION>
+		</select> 
+		
+		<br /> <br /> <br />
+
+		<div>
+			<table>
+				<tr>
+					<td>Montant : </td>
+					<td>
+						<input type="number" name="montant" min="0" value="0"></input>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<br /> <br /> <br />
+
+		<div>
+			<button type="submit">Effectuer le virement</button>
+		</div>
+	</form>
+
+	<br />
+	<br />
+	<br />
+	
+	<div>
+		<form action="/monCompte" method="get">
+			<button type="submit">Mon Compte</button>
+		</form>
+	</div>
+</body>
+</html>

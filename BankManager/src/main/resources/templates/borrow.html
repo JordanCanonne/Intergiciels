@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Demander un prêt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div th:if="${result}">
+		<font color="red">
+			<div th:text="${result}"></div>
+		</font>
+	</div>
+	<h1>Combien voulez-vous emprunter ?</h1>
+	<form action="/borrow" method="post">
+		<input name="montant" type="number" min="0" value="0"></input>
+		<button type="submit">Faire la demande</button>
+	</form>
+	<form action="/monCompte" method="get">
+		<button type="submit">Mon Compte</button>
+	</form>
+</body>
+</html>
